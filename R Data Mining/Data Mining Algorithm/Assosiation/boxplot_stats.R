@@ -1,0 +1,6 @@
+x <- rnorm(100)
+y <- rnorm(100)
+df <- data.frame(x,y)
+head(df)
+attach(df)
+(a <- which(x%in%boxplot.stats(x)$out))
