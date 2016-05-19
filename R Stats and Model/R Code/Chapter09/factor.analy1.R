@@ -4,7 +4,7 @@ factor.analy1<-function(S, m){
    colname<-paste("Factor", 1:m, sep="")
    A<-matrix(0, nrow=p, ncol=m, 
              dimnames=list(rowname, colname))
-   eig<-eigen(S)
+   eig<-eigen(S) # 求特征向量和特征值
    for (i in 1:m)
       A[,i]<-sqrt(eig$values[i])*eig$vectors[,i]
    h<-diag(A%*%t(A))

@@ -1,0 +1,16 @@
+{
+    "contents" : "factor.analy1<-function(S, m){\n   p<-nrow(S); diag_S<-diag(S); sum_rank<-sum(diag_S)\n   rowname<-paste(\"X\", 1:p, sep=\"\")\n   colname<-paste(\"Factor\", 1:m, sep=\"\")\n   A<-matrix(0, nrow=p, ncol=m, \n             dimnames=list(rowname, colname))\n   eig<-eigen(S) # 求特征向量和特征值\n   for (i in 1:m)\n      A[,i]<-sqrt(eig$values[i])*eig$vectors[,i]\n   h<-diag(A%*%t(A))\n\n   rowname<-c(\"SS loadings\", \"Proportion Var\", \"Cumulative Var\")\n   B<-matrix(0, nrow=3, ncol=m, \n             dimnames=list(rowname, colname))\n   for (i in 1:m){\n     B[1,i]<-sum(A[,i]^2)\n     B[2,i]<-B[1,i]/sum_rank\n     B[3,i]<-sum(B[1,1:i])/sum_rank\n   }\n   method<-c(\"Principal Component Method\")\n   list(method=method, loadings=A, \n        var=cbind(common=h, spcific=diag_S-h), B=B) \n}",
+    "created" : 1463647393702.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1356122697",
+    "id" : "A2D70472",
+    "lastKnownWriteTime" : 1463652011,
+    "path" : "~/GitHub/eledata-data-analysis/R Stats and Model/R Code/Chapter09/factor.analy1.R",
+    "project_path" : "R Stats and Model/R Code/Chapter09/factor.analy1.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

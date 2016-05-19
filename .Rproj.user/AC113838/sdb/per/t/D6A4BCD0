@@ -1,0 +1,16 @@
+{
+    "contents" : "#### ?????ݿ???ʽ????????\nstudent<-data.frame(\n   X1=c(148, 139, 160, 149, 159, 142, 153, 150, 151, 139, \n        140, 161, 158, 140, 137, 152, 149, 145, 160, 156, \n        151, 147, 157, 147, 157, 151, 144, 141, 139, 148), \n   X2=c(41, 34, 49, 36, 45, 31, 43, 43, 42, 31, \n        29, 47, 49, 33, 31, 35, 47, 35, 47, 44,\n        42, 38, 39, 30, 48, 36, 36, 30, 32, 38),\n   X3=c(72, 71, 77, 67, 80, 66, 76, 77, 77, 68, \n        64, 78, 78, 67, 66, 73, 82, 70, 74, 78, \n        73, 73, 68, 65, 80, 74, 68, 67, 68, 70),\n   X4=c(78, 76, 86, 79, 86, 76, 83, 79, 80, 74, \n        74, 84, 83, 77, 73, 79, 79, 77, 87, 85, \n        82, 78, 80, 75, 88, 80, 76, 76, 73, 78)\n)\n\n#### ?????ɷַ???\nstudent.pr<-princomp(student, cor=TRUE)\n\n#### ????ʾ????????\nsummary(student.pr, loadings=TRUE)\n\n#### ??Ԥ??\npredict(student.pr)\n\n#### ????ʯͼ\nscreeplot(student.pr)\nscreeplot(student.pr,type=\"lines\")\n\nbiplot(student.pr)\n\n## princomp(~X1+X2+X3+X4,data=student, cor=T)\n",
+    "created" : 1463649408631.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2539271883",
+    "id" : "D6A4BCD0",
+    "lastKnownWriteTime" : 1443330173,
+    "path" : "~/GitHub/eledata-data-analysis/R Stats and Model/R Code/Chapter09/exam0901.R",
+    "project_path" : "R Stats and Model/R Code/Chapter09/exam0901.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

@@ -1,0 +1,16 @@
+{
+    "contents" : "factor.analy<-function(S, m=0, \n   d=1/diag(solve(S)), method=\"likelihood\"){\n   if (m==0){\n      p<-nrow(S); eig<-eigen(S) \n      sum_eig<-sum(diag(S))\n      for (i in 1:p){\n         if (sum(eig$values[1:i])/sum_eig>0.70){\n             m<-i; break\n         }\n      }\n   }\n   source(\"factor.analy1.R\")\n   source(\"factor.analy2.R\")\n   source(\"factor.analy3.R\")\n   switch(method, \n             princomp=factor.analy1(S, m),\n             factor=factor.analy2(S, m, d),\n             likelihood=factor.analy3(S, m, d)\n          ) \n}\n\n   ",
+    "created" : 1463647389947.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "800279295",
+    "id" : "1E012A7E",
+    "lastKnownWriteTime" : 1443330173,
+    "path" : "~/GitHub/eledata-data-analysis/R Stats and Model/R Code/Chapter09/factor.analy.R",
+    "project_path" : "R Stats and Model/R Code/Chapter09/factor.analy.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

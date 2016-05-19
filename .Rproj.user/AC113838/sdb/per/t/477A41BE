@@ -1,0 +1,16 @@
+{
+    "contents" : "#### ?????ݿ?????ʽ????????\nconomy<-data.frame(\n  x1=c(149.3, 161.2, 171.5, 175.5, 180.8, 190.7, \n       202.1, 212.4, 226.1, 231.9, 239.0),\n  x2=c(4.2, 4.1, 3.1, 3.1, 1.1, 2.2, 2.1, 5.6, 5.0, 5.1, 0.7),\n  x3=c(108.1, 114.8, 123.2, 126.9, 132.1, 137.7, \n       146.0, 154.1, 162.3, 164.3, 167.6),\n  y=c(15.9, 16.4, 19.0, 19.1, 18.8, 20.4, 22.7, \n      26.5, 28.1, 27.6, 26.3)\n)\n#### ?????Իع?\nlm.sol<-lm(y~x1+x2+x3, data=conomy)\nsummary(lm.sol)\n\n#### ?????ɷַ???\nconomy.pr<-princomp(~x1+x2+x3, data=conomy, cor=T)\nsummary(conomy.pr, loadings=TRUE)\n\n#### Ԥ???????????ɷ?, ???????ɷַ???\npre<-predict(conomy.pr)\nconomy$z1<-pre[,1]\nconomy$z2<-pre[,2]\nlm.sol<-lm(y~z1+z2, data=conomy)\nsummary(lm.sol)\n\n#### ???任, ?õ?ԭ?????µĹ?ϵ????ʽ\nbeta<-coef(lm.sol); A<-loadings(conomy.pr)\nx.bar<-conomy.pr$center; x.sd<-conomy.pr$scale\ncoef<-(beta[2]*A[,1]+ beta[3]*A[,2])/x.sd\nbeta0 <- beta[1]- sum(x.bar * coef)\nc(beta0, coef)\n\n\n",
+    "created" : 1463649421004.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3571358489",
+    "id" : "477A41BE",
+    "lastKnownWriteTime" : 1443330173,
+    "path" : "~/GitHub/eledata-data-analysis/R Stats and Model/R Code/Chapter09/exam0903.R",
+    "project_path" : "R Stats and Model/R Code/Chapter09/exam0903.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
