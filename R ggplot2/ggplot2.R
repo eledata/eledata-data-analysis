@@ -260,6 +260,7 @@ qplot(cty, hwy, data = mpg2) + facet_grid(drv~cyl)
 
 
 # 电影 10 年评分分布
+data(movies)
 movies$decade <- round_any(movies$year, 10, floor)
 qplot(rating, ..density.., data=subset(movies, decade > 1890),
       geom="histogram", binwidth = 0.5) +
