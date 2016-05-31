@@ -1,5 +1,5 @@
 # 线性回归
-
+require(ggplot2)
 # 1 积雪融化对下游灌溉的影响
 
 snow <- data.frame(
@@ -7,7 +7,10 @@ snow <- data.frame(
     Y = c(1907,1287,2700,2373,3260,3000,1947,2273,3113,2493)
 )
 
-plot(snow$X,snow$Y)
+snow.plot <- ggplot(snow, aes(X, Y)) + 
+  geom_point() + 
+  geom_smooth(method = lm)
+snow.plot
 
 snow.lm <- lm(Y ~ 1 + X, data = snow)
 summary(snow.lm)
@@ -25,5 +28,34 @@ Anscombe<-data.frame(
   Y4=c(6.58, 5.76, 7.71, 8.84, 8.47, 7.04, 5.25, 12.50, 5.56, 7.91, 6.89)
 )
 
+Anscombe.plot <- ggplot(Anscombe, aes(Y1, X)) + 
+  geom_point() + 
+  geom_smooth(method = lm)
+Anscombe.plot
 summary(lm(Y1~X, data = Anscombe))
-plot(Anscombe$Y1, Anscombe$X)
+
+
+# 1000人寿命密度图，以是否吸烟为因子
+
+longevity <- read.csv2("longevity.csv",header = TRUE, sep = ",")
+longevity$Smokes <- as.factor(longevity$Smokes)
+smoke_life <- ggplot(longevity, aes(AgeAtDeath, fill = Smokes)) +
+  geom_density(position = "stack") + 
+  facet_grid(Smokes ~ .) + 
+  theme_bw() +
+  xlab("寿命密度") +
+  ylab("去世年龄")
+
+smoke_life
+
+# 体重相对身高的散点图
+height.weight <- read.csv2("01_heights_weights_genders.csv", header = TRUE, sep = ",")
+head(height.weight)
+hw_point <- ggplot(height.weight, aes(Height, Weight)) +
+  geom_point(aes(colour = factor(Gender))) + 
+  theme_bw() +
+  xlab("体重") +
+  ylab("身高")
+hw_point
+
+
