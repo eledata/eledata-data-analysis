@@ -133,4 +133,53 @@ plot(z)
 
 
 
+building <- TRUE
+scoring  <- ! building
+
+
+# A pre-defined value is used to reset the random seed so that results are repeatable.
+
+crv$seed <- 42 
+
+#============================================================
+# Rattle timestamp: 2016-06-04 17:51:57 x86_64-w64-mingw32 
+
+# Load the data.
+
+crs$dataset <- read.csv("file:///C:/Program Files/R/R-3.2.5/library/rattle/csv/audit.csv", na.strings=c(".", "NA", "", "?"), strip.white=TRUE, encoding="UTF-8")
+
+#============================================================
+# Rattle timestamp: 2016-06-04 17:51:58 x86_64-w64-mingw32 
+
+# Note the user selections. 
+
+# Build the training/validate/test datasets.
+
+# 可以保持每次随机抽样数据的一致性
+set.seed(crv$seed)
+crs$nobs <- nrow(crs$dataset) # 2000 observations 
+crs$sample <- crs$train <- sample(nrow(crs$dataset), 0.7*crs$nobs) # 1400 observations
+crs$validate <- sample(setdiff(seq_len(nrow(crs$dataset)), crs$train), 0.15*crs$nobs) # 300 observations
+crs$test <- setdiff(setdiff(seq_len(nrow(crs$dataset)), crs$train), crs$validate) # 300 observations
+
+# The following variable selections have been noted.
+
+crs$input <- c("Age", "Employment", "Education", "Marital",
+               "Occupation", "Income", "Gender", "Deductions",
+               "Hours")
+
+crs$numeric <- c("Age", "Income", "Deductions", "Hours")
+
+crs$categoric <- c("Employment", "Education", "Marital", "Occupation",
+                   "Gender")
+
+crs$target  <- "TARGET_Adjusted"
+crs$risk    <- "RISK_Adjustment"
+crs$ident   <- "ID"
+crs$ignore  <- "IGNORE_Accounts"
+crs$weights <- NULL
+
+
+
+
 

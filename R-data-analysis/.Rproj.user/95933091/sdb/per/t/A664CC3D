@@ -1,0 +1,17 @@
+{
+    "contents" : "# 协方差矩阵\nrequire(corrplot)\n\nx1 <- c(65,70,70,69,66,67,68,72,66,68)\nx2 <- c(45,45,48,46,50,46,47,43,47,48)\nx3 <- c(27.6 ,30.7,31.8,32.6,31,31.3,37,33.6,33.1,34.2)\n\ntest_data <- cbind(x1, x2, x3)\ntest_data\n\n# var 方差函数，也可以计算出协方差矩阵。\nvar(test_data)\ncov(test_data)\n\n# cor 相关新系数\ncor_t <- cor(test_data)\nsymnum(cor_t)\ncorrplot(cor_t, method = \"circle\")\n\n# 使用longley数据集来测试cor\n# Longley数据集来自J．W．Longley（1967）发表在JASA上的一篇论文，是强共线性的宏观经济数据,\n# 包含GNP deflator(GNP平减指数)、GNP(国民生产总值)、Unemployed(失业率)、ArmedForces(武装力量)、\n# Population(人口)、year(年份)，Emlpoyed(就业率)。\n# LongLey数据集因存在严重的多重共线性问题，在早期经常用来检验各种算法或计算机的计算精度。\n\n(clp <- cor(longley, method = \"pearson\"))\n(cls <- cor(longley, method = \"spearman\"))\n(clk <- cor(longley, method = \"kendall\"))\n\ncorrplot(clp, method = \"circle\")\ncorrplot(cls, method = \"number\")\ncorrplot(clk, method = \"pie\")\n\n\n\n\n",
+    "created" : 1464963482912.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1117499510",
+    "id" : "A664CC3D",
+    "lastKnownWriteTime" : 1464964678,
+    "path" : "~/GitHub/eledata-data-analysis/R-data-analysis/R Stats and Model/Var_Cor.R",
+    "project_path" : "R Stats and Model/Var_Cor.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

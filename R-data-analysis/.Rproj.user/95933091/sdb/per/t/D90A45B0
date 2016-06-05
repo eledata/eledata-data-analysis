@@ -1,0 +1,17 @@
+{
+    "contents" : "# 在做分类中需要估算样本之间的相似性度量，通常的做法是采用计算样本之间的距离\n# 1. 欧式距离\n# 设置 5X20 矩阵\nx <- matrix(rnorm(100), nrow = 5)\n\nx1 <- c(1,5)\nx2 <- c(7,4)\nx3 <- cbind(x1, x2)\nx3\ndist1 <- dist(x3, method = \"manhattan\")\ndist1\ndist2 <- dist(x3, method = \"maximum\") # 切比雪夫 距离\ndist2\ndist3 <- dist(x3, method = \"manhattan\")\ndist3\ndist4 <- Mahalanobis(x3, method = \"manhattan\")\ndist4\n",
+    "created" : 1464963478482.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2242425432",
+    "id" : "D90A45B0",
+    "lastKnownWriteTime" : 1464963450,
+    "path" : "~/GitHub/eledata-data-analysis/R-data-analysis/R Stats and Model/DistianceR.R",
+    "project_path" : "R Stats and Model/DistianceR.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
