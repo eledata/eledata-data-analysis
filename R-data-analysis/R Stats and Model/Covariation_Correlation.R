@@ -2,7 +2,7 @@
 # 如果两个变量的变化趋势一致，也就是说如果其中一个大于自身的期望值，另外一个也大于自身的期望值，那么两个变量之间的协方差就是正值。
 # 如果两个变量的变化趋势相反，即其中一个大于自身的期望值，另外一个却小于自身的期望值，那么两个变量之间的协方差就是负值。
 # cov(x,y) = 0 说明两者之间相互独立
-
+# cov(x,y) = E((x-Ex)*(y-Ey))
 require(corrplot)
 
 x1 <- c(65,70,70,69,66,67,68,72,66,68)
@@ -18,7 +18,14 @@ test_data
 var(test_data)
 cov(test_data)
 
-# cor 相关新系数
+# cor 相关系数
+# 简单的相关系数的分类
+# 0.8-1.0 极强相关
+# 0.6-0.8 强相关
+# 0.4-0.6 中等程度相关
+# 0.2-0.4 弱相关
+# 0.0-0.2 极弱相关或无相关
+
 cor_t <- cor(test_data)
 symnum(cor_t)
 corrplot(cor_t, method = "circle")
@@ -37,6 +44,7 @@ corrplot(clp, method = "circle")
 corrplot(cls, method = "number")
 corrplot(clk, method = "pie")
 
-
+# 判别两个总体是否相关的函数，cor.test
+cor.test(longley$GNP, longley$Unemployed)
 
 
