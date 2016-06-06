@@ -106,10 +106,11 @@ tx1 # 7个因子，12个样本
 tx2 # 7个因子，23个样本
 tx  # 7个因子，35个样本
 
-# 表明tx到tx1的马氏距离， tx 测试样本，colMeans 中心点，测试样本的协方差
-D2 <- mahalanobis(tx, colMeans(tx1), cov(tx))
+# 表明tx到tx1的马氏距离， tx 测试样本，colMeans总体样本中心点，总体样本的协方差. 每一行，也就是向量，到中心点的距离情况。综合了7个因子的情况，之后
+# 求和的距离
+D2 <- mahalanobis(tx, colMeans(tx1), cov(tx1)) 
 D2
-D3 <- mahalanobis(tx, colMeans(tx2), cov(tx))
+D3 <- mahalanobis(tx, colMeans(tx2), cov(tx2))
 D3
 dis <- D3 - D2 # 到tx1近，还是tx2近。
 dis

@@ -1,0 +1,17 @@
+{
+    "contents" : "discriminiant.distance<-function\n   (TrnX1, TrnX2, TstX = NULL, var.equal = FALSE){\n   if (is.null(TstX) == TRUE) TstX<-rbind(TrnX1,TrnX2)\n   if (is.vector(TstX) == TRUE)  TstX<-t(as.matrix(TstX))\n   else if (is.matrix(TstX) != TRUE)\n      TstX<-as.matrix(TstX)\n   if (is.matrix(TrnX1) != TRUE) TrnX1<-as.matrix(TrnX1)\n   if (is.matrix(TrnX2) != TRUE) TrnX2<-as.matrix(TrnX2)\n\n   nx<-nrow(TstX)\n   blong<-matrix(rep(0, nx), nrow=1, byrow=TRUE, \n         dimnames=list(\"blong\", 1:nx))\n   mu1<-colMeans(TrnX1); mu2<-colMeans(TrnX2) \n   if (var.equal == TRUE  || var.equal == T){\n      S<-var(rbind(TrnX1,TrnX2))\n      w<-mahalanobis(TstX, mu2, S)-mahalanobis(TstX, mu1, S)\n   }\n   else{\n      S1<-var(TrnX1); S2<-var(TrnX2)\n      w<-mahalanobis(TstX, mu2, S2)-mahalanobis(TstX, mu1, S1)\n   }\n   for (i in 1:nx){\n      if (w[i]>0)\n          blong[i]<-1\n      else\n          blong[i]<-2\n   }\n   blong\n}",
+    "created" : 1465218372783.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3087785632",
+    "id" : "6E10A040",
+    "lastKnownWriteTime" : 1464696966,
+    "path" : "~/GitHub/eledata-data-analysis/R-data-analysis/R Stats and Model/R Code/Chapter08/discriminiant.distance.R",
+    "project_path" : "R Stats and Model/R Code/Chapter08/discriminiant.distance.R",
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
