@@ -64,19 +64,7 @@ mahalanobis.dist <- function(x, center, cov, inverted = FALSE, ...){
 mahalanobis.dist(x, colMeans(x), cov = x.cov)
 mahalanobis(x, colMeans(x), cov = x.cov)
 
-# 举一个样本总体的例子
-x <- c(2,4,3,2,4,7,7,2,2,5)
-y <- c(5,6,8,5,10,7,12,12,6,6)
-z <- cbind(c(2,4,3,2,4,7,7,2,2,5),c(5,6,8,5,10,7,12,12,6,6))
-z
-x <- as.matrix(x)
-y <- as.matrix(y)
-z <- as.matrix(z)
 
-D2 <- mahalanobis(x, colMeans(x), cov(x))
-D3 <- mahalanobis(y, colMeans(x), cov(x))
-D2
-D3
 # 5. 余弦夹角
 # 5.1 cos(x) = (a * b)/(||a|| * ||b||)，讲的余弦夹角与相似度之间的关系，用向量去思考就可以知道。
 # 余弦夹角值大 --> 两者相似度高， x的值低，两者和靠近。 反之亦然。
