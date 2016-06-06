@@ -42,12 +42,14 @@ maximum.dist(data.x)
 dist(data.x, method = "maximum")
 
 # 4. 马氏距离
-# 4.1 设x，y均值为m，协方差S，来之同一总体的样本，dist(x,y) = sqrt((x-y)T*S*(x-y))-- x,y之间的马氏距离
+# 4.1 设x，y均值为m，总体的协方差S，来之同一总体的样本，dist(x,y) = sqrt((x-y)T*S*(x-y))-- x,y之间的马氏距离
 # x与总体X的距离，dist(x,X) = sqrt((x-X)T*S(-1)*(x-X))
 # inverted 是指明协方差是否已经是逆矩阵
 # %*% 表示矩阵相乘 #矩阵X乘矩阵Y。若Y是数值型的向量，R会自动判断其为行向量还是列向量。若X与Y为维度匹配的数值型向量，则返回的是矩阵型向量的内积。
-# 协方差算的是不同总体之间的情况，马氏距离算的总体内部的情况
-x <- matrix(rnorm(10*3), ncol = 3) # 3 个样本总体
+# mahalanobis(x = 总体，mu = 样本的均值，协方差 = 样本的协方差)
+
+
+x <- matrix(rnorm(10*3), ncol = 3) # 列：3个因子，行：10个样本
 x.cov <- cov(x)
 mahalanobis.dist <- function(x, center, cov, inverted = FALSE, ...){
   x <- if (is.vector(x))
@@ -63,11 +65,18 @@ mahalanobis.dist(x, colMeans(x), cov = x.cov)
 mahalanobis(x, colMeans(x), cov = x.cov)
 
 # 举一个样本总体的例子
-x <- matrix(rnorm(10), ncol = 1)
-Sx <- cov(x)
-D2 <- mahalanobis(x, colMeans(x), Sx)
+x <- c(2,4,3,2,4,7,7,2,2,5)
+y <- c(5,6,8,5,10,7,12,12,6,6)
+z <- cbind(c(2,4,3,2,4,7,7,2,2,5),c(5,6,8,5,10,7,12,12,6,6))
+z
+x <- as.matrix(x)
+y <- as.matrix(y)
+z <- as.matrix(z)
 
-
+D2 <- mahalanobis(x, colMeans(x), cov(x))
+D3 <- mahalanobis(y, colMeans(x), cov(x))
+D2
+D3
 # 5. 余弦夹角
 # 5.1 cos(x) = (a * b)/(||a|| * ||b||)，讲的余弦夹角与相似度之间的关系，用向量去思考就可以知道。
 # 余弦夹角值大 --> 两者相似度高， x的值低，两者和靠近。 反之亦然。
@@ -101,20 +110,3 @@ dist(x, method = "minkowski")
 # 总结： 曼哈顿距离，欧式距离，切比雪夫距离，闵式距离，都是看向量，两个向量，多个向量的计算。向量的思想去思考
 # 马氏距离，要加入总体样本的概念，列表示不同的样本，行表示不同样本的值。这是要注意的地方，马氏距离算的是样本内的值到
 # 中心的距离。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

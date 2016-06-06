@@ -37,7 +37,53 @@ classX2<-data.frame(
          70.00,  30.0,  30.0,  30.0, 18.00, 75.00, 75.00, 40.00,
          40.00,180.00,180.00,180.00,180.00, 45.00, 45.00)
 )
+
 source("discriminiant.distance.R")
 discriminiant.distance(classX1, classX2, var.equal=TRUE)
 discriminiant.distance(classX1, classX2)
+
+
+tx1 <- as.matrix(classX1) 
+tx2 <- as.matrix(classX2)
+ctx <- rbind(classX1, classX2)
+tx <- as.matrix(ctx)
+tx1 # 7个因子，12个样本
+tx2 # 7个因子，23个样本
+tx  # 7个因子，35个样本
+
+D2 <- mahalanobis(tx, colMeans(tx1), cov(tx))
+D2
+D3 <- mahalanobis(tx, colMeans(tx2), cov(tx))
+D3
+dis <- D3 - D2
+dis
+
+
+
+mahalanobis.dist <- function(x, center, cov, inverted = FALSE, ...){
+  x <- if (is.vector(x))
+    matrix(x, ncol = length(x))
+  else as.matrix(x) # 转换成矩阵
+  if(!identical(center, FALSE))
+    x <- sweep(x, 2L, center) # 在列方向上减去均值
+  if(!inverted)
+    cov <- solve(cov, ...) # 协方差求逆矩阵
+  setNames(rowSums(x %*% cov * x), rownames(x))
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

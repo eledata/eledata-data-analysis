@@ -148,13 +148,6 @@ crv$seed <- 42
 
 crs$dataset <- read.csv("file:///C:/Program Files/R/R-3.2.5/library/rattle/csv/audit.csv", na.strings=c(".", "NA", "", "?"), strip.white=TRUE, encoding="UTF-8")
 
-#============================================================
-# Rattle timestamp: 2016-06-04 17:51:58 x86_64-w64-mingw32 
-
-# Note the user selections. 
-
-# Build the training/validate/test datasets.
-
 # 可以保持每次随机抽样数据的一致性
 set.seed(crv$seed)
 crs$nobs <- nrow(crs$dataset) # 2000 observations 
