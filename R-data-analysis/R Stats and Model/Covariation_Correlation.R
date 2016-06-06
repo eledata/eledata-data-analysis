@@ -46,5 +46,14 @@ corrplot(clk, method = "pie")
 
 # 判别两个总体是否相关的函数，cor.test
 cor.test(longley$GNP, longley$Unemployed)
-
+# Pearson's product-moment correlation
+# 
+# data:  longley$GNP and longley$Unemployed
+# t = 2.8376, df = 14, p-value = 0.01317 # < 0.05 表明相关 
+# alternative hypothesis: true correlation is not equal to 0
+# 95 percent confidence interval:
+# 0.1549766 0.8464304 # 相关系数的95%的区间值
+# sample estimates:
+# cor 
+# 0.6042609 
 
