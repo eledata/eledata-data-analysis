@@ -34,3 +34,6 @@ plot(mds, col=clu$cluster, main='kmeans 聚类 k=2', pch = 19)
 plot(mds, col=iris$Species, main='原始聚类', pch = 19)
 par(old.par)
 ##由结果可知，由于原始数据集分
+
+
+
