@@ -102,9 +102,9 @@ tx1 <- as.matrix(classX1)
 tx2 <- as.matrix(classX2)
 ctx <- rbind(classX1, classX2)
 tx <- as.matrix(ctx)
-tx1 # 7个因子，12个样本
-tx2 # 7个因子，23个样本
-tx  # 7个因子，35个样本
+tx1 # 7个属性，12个样本，因子1
+tx2 # 7个属性，23个样本，因子2
+tx  # 7个属性，35个样本，回代来判定是否分的准确
 
 # 表明tx到tx1的马氏距离， tx 测试样本，colMeans总体样本中心点，总体样本的协方差. 每一行，也就是向量，到中心点的距离情况。综合了7个因子的情况，之后
 # 求和的距离

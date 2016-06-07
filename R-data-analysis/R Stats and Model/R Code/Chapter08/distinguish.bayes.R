@@ -39,6 +39,8 @@ distinguish.bayes<-function
              dmin<-D[i,j]; blong[j]<-i
       }
    }
-   blong
+   D
 }
-
+tstx <- iris[,1:4]
+trng <- gl(3,50) # 预先知道有3类
+(distinguish.bayes(tstx, trng))
