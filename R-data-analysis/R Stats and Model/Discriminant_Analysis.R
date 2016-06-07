@@ -318,29 +318,45 @@ trng <- gl(3,50) # 预先知道有3类
 # W = siga1^2 + siga2^2 类内偏差平方和，B = (u1 - u)^2 + (u2 - u)^2  u = (u1 + u2)/2
 # 2. 线性判别函数中系数的确定
 # 取u(x)为线性函数，u(x) = a^T * x (LDA, 线性判别分析)
-# 
+# 判别函数 w = D^tS^(-1)(x-mean(x)) 具体看书里面
 
+discriminant.fisher <- function(trnx1, trnx2, tstx = NULL){
+  if(is.null(tstx)) tstx <- rbind(trnx1, trnx2)
+  if(is.vector(tstx)){
+    tstx <- t(as.matrix(tstx)) # 由于as.matrix()将向量转换为矩阵，会导致生成许多样本。需要t来转置，一个向量对应一个样本。
+  }else if(is.matrix(tstx) != TRUE){
+    tstx <- as.matrix(tstx)
+  }
+  
+  if(is.matrix(trnx1)) trnx1 <- as.matrix(trnx1)
+  if(is.matrix(trnx2)) trnx2 <- as.matrix(trnx2)
+  
+  nt <- nrow(tstx) # 表示要测距的向量个数(行数)
+  result <- matrix(rep(0, nt), nrow = 1, byrow = TRUE, dimnames = list("result", 1:nt))
+  trnx1.rn <- nrow(trnx1)
+  trnx2.rn <- nrow(trnx2)
+  mu1 <- colMeans(trnx1)
+  mu2 <- colMeans(trnx2)
+  rn <- trnx1.rn + trnx2.rn
+  # 判别分析函数 -- 不是特别理解透彻
+  S <- (trnx1.rn - 1)*var(trnx1) + (trnx2.rn - 1)*var(trnx2)
+  mu <- trnx1.rn/rn*mu1 + trnx2.rn/rn*mu2
+  w <- (tstx - rep(1,nt)%o%mu)%*%solve(S, mu2 - mu1);
 
+  for(i in 1:nt){
+    if(w[i] <= 0){
+      result[i] <- 1
+    }else{
+      result[i] <- 2
+    }
+  }
+  
+  result
+}
 
+# test example:
 
+(discriminant.fisher(classX1, classX2))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# 总结
+# 好好理解各种计算判别分析的方法！！！
