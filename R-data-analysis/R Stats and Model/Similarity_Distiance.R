@@ -127,6 +127,10 @@ cosine.dist <- function(x){
 }
 cosine.dist(y)
 
+y <- scale(x, center = F, scale = T)/sqrt(nrow(x) - 1)
+c <- t(y) %*% y
+
+
 # 6. hamming dist
 # 两个等长的字符串，其中一个变成另外一个的变换次数 1111-> 1001 Hamming Dist 2
 x <- c(0, 0, 1, 1, 1)
@@ -142,9 +146,15 @@ dist(rbind(x, y), method = "binary")
 # p = inf : 切比雪夫距离
 
 x <- matrix(rnorm(30), nrow = 3)
-y <- matrix(rnorm(20), ncol = 2)
 dist(x, method = "minkowski", p = 2)
 dist(x, method = "minkowski")
+
+# 8. Lance dist or Canberra Dist Canberra 是Lance的加强版
+# dist = sum|x1k - x2k|/|x1k + x2k|
+
+x <- matrix(rnorm(30), nrow = 3)
+dist(x, method = "canberra")
+
 
 # 总结： 曼哈顿距离，欧式距离，切比雪夫距离，闵式距离，都是看向量，两个向量，多个向量的计算。向量的思想去思考
 # 马氏距离，向量化的思想要贯彻。这是要注意的地方，马氏距离算的是样本内的值到
