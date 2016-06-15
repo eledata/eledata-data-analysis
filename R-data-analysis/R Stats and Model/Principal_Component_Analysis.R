@@ -24,28 +24,6 @@ student <- data.frame(
        82, 78, 80, 75, 88, 80, 76, 76, 73, 78)
 )
 
-student.princomp <- princomp(student)
-summary(student.princomp, loading = TRUE)
-
-# result:
-# Importance of components:
-#   Comp.1     Comp.2     Comp.3
-# Standard deviation     10.9842501 3.23837983 1.55316058
-# Proportion of Variance  0.8913911 0.07747883 0.01782215
-# Cumulative Proportion   0.8913911 0.96886995 0.98669211
-# Comp.4
-# Standard deviation     
-# Proportion of Variance 0.01330789
-# Cumulative Proportion  1.00000000
-
-# Loadings:
-#   Comp.1 Comp.2 Comp.3 Comp.4
-# X1  0.624  0.646  0.224 -0.379
-# X2  0.559 -0.346 -0.746 -0.108
-# X3  0.408 -0.660  0.624       
-# X4  0.362  0.166         0.915
-
-
 # 手工计算
 # 1. 计算协方差
 (student.cov <- cov(student))
@@ -63,22 +41,138 @@ student.eigen$vectors
 # 4. 主成分的值
 (student.z <- sqrt(student.eigen$values))
 
-student.z <- z.show(student, student.eigen$vectors)
-student.z
-(student.z.cov <- cov(t(student.z)))
+# 5. 计算结果
 
-z.show <- function(data, eigen.vec){
-  k <- length(data)
-  tmp.z <- matrix(rep(0, k^2), nrow = k, ncol = k, byrow = TRUE)
-  for(i in 1:k){
-    tmp.z[i,] <- colSums(t(eigen.vec[,i]) * data)
-  }
-  tmp.z
+edc <- list(sdev = (student.z <- sqrt(student.eigen$values)),
+            loadings = structure(student.eigen$vectors, class="loadings")，
+            POV = (student.pov <- (student.eigen$values/sum(student.eigen$values))),
+            CP = (student.cp <- cumsum(student.pov))
+            )
+
+
+student.princomp <- princomp(student)
+summary(student.princomp, loading = TRUE)
+
+# result:
+# Importance of components: 最大方差法来选取主成分
+#   Comp.1     Comp.2     Comp.3
+# Standard deviation     10.9842501 3.23837983 1.55316058
+# Proportion of Variance  0.8913911 0.07747883 0.01782215
+# Cumulative Proportion   0.8913911 0.96886995 0.98669211
+# Comp.4
+# Standard deviation     
+# Proportion of Variance 0.01330789
+# Cumulative Proportion  1.00000000
+
+# Loadings: 载荷，表示x对z的重要程度
+#   Comp.1 Comp.2 Comp.3 Comp.4
+# X1  0.624  0.646  0.224 -0.379
+# X2  0.559 -0.346 -0.746 -0.108
+# X3  0.408 -0.660  0.624       
+# X4  0.362  0.166         0.915
+
+# 1.2 主成分分析的应用
+# 1.2.1 变量分类的问题
+
+# 16项身体指标数据的相关矩阵
+x<-c(1.00, 
+     0.79, 1.00, 
+     0.36, 0.31, 1.00, 
+     0.96, 0.74, 0.38, 1.00, 
+     0.89, 0.58, 0.31, 0.90, 1.00, 
+     0.79, 0.58, 0.30, 0.78, 0.79, 1.00, 
+     0.76, 0.55, 0.35, 0.75, 0.74, 0.73, 1.00, 
+     0.26, 0.19, 0.58, 0.25, 0.25, 0.18, 0.24, 1.00,
+     0.21, 0.07, 0.28, 0.20, 0.18, 0.18, 0.29,-0.04, 1.00,
+     0.26, 0.16, 0.33, 0.22, 0.23, 0.23, 0.25, 0.49,-0.34, 1.00, 
+     0.07, 0.21, 0.38, 0.08,-0.02, 0.00, 0.10, 0.44,-0.16, 0.23, 
+     1.00, 
+     0.52, 0.41, 0.35, 0.53, 0.48, 0.38, 0.44, 0.30,-0.05, 0.50, 
+     0.24, 1.00, 
+     0.77, 0.47, 0.41, 0.79, 0.79, 0.69, 0.67, 0.32, 0.23, 0.31, 
+     0.10, 0.62, 1.00, 
+     0.25, 0.17, 0.64, 0.27, 0.27, 0.14, 0.16, 0.51, 0.21, 0.15, 
+     0.31, 0.17, 0.26, 1.00, 
+     0.51, 0.35, 0.58, 0.57, 0.51, 0.26, 0.38, 0.51, 0.15, 0.29, 
+     0.28, 0.41, 0.50, 0.63, 1.00, 
+     0.21, 0.16, 0.51, 0.26, 0.23, 0.00, 0.12, 0.38, 0.18, 0.14, 
+     0.31, 0.18, 0.24, 0.50, 0.65, 1.00)
+names<-c("X1", "X2", "X3", "X4", "X5", "X6", "X7", "X8", "X9",  
+         "X10", "X11", "X12", "X13", "X14", "X15", "X16")
+mtr <- matrix(0, nrow = 16, ncol = 16, dimnames = list(names, names))
+for (i in 1:16){
+  for(j in 1:i){
+    mtr[j,i] <- mtr[i,j] <- x[(i-1)*i/2+j]
+  }  
 }
 
+summary(pcmp <- princomp(covmat = mtr), loading = TRUE)
+(load <- loadings(pcmp))
+
+for(i in 1:15){
+  plot(load[,i:i + 1]); text(load[,], load[,2], adj = c(-0.4, 0.3))
+}
+
+# 可以看出分类情况
+plot(load[,1:2]); text(load[,1], load[,2], adj=c(-0.4, 0.3))
+plot(load[,2:3]); text(load[,2], load[,3], adj=c(-0.4, 0.3))
+plot(load[,3:4]); text(load[,3], load[,4], adj=c(-0.4, 0.3))
+plot(load[,4:5]); text(load[,4], load[,5], adj=c(-0.4, 0.3))
+plot(load[,5:6]); text(load[,5], load[,6], adj=c(-0.4, 0.3))
+
+# 同样对比Kmeans来划分
+kmeans(mtr,3)
 
 
+# 1.2.2 主成分回归
+# 当自变量出现多重共线性时，经典的回归方法一般效果不好，可以采用主成分回归来克服这些问题
 
+# X1,国内生产总值 x2,存储量，x3,总消费量，y，进口总额
+
+economy <- data.frame(
+  x1 = c(149.3, 161.2, 171.5, 175.5, 180.8, 190.7, 
+       202.1, 212.4, 226.1, 231.9, 239.0),
+  x2 = c(4.2, 4.1, 3.1, 3.1, 1.1, 2.2, 2.1, 5.6, 5.0, 5.1, 0.7),
+  x3 = c(108.1, 114.8, 123.2, 126.9, 132.1, 137.7, 
+       146.0, 154.1, 162.3, 164.3, 167.6),
+  y = c(15.9, 16.4, 19.0, 19.1, 18.8, 20.4, 22.7, 
+      26.5, 28.1, 27.6, 26.3)
+)
+
+lm.sol <- lm(y ~ x1 + x2 + x3, data = economy)
+summary(lm.sol)
+
+# 利用主成分分析
+pcmp <- princomp(~ x1 + x2 + x3, data = economy, cor = T)
+summary(pcmp, loading = TRUE)
+
+# m个主成分对原始变量的贡献率
+pred <- predict(pcmp) # Z 主成分的值, z与x关系，线性关系，通过Q，
+# x1  x2    x3    y         Z1          Z2
+# 1  149.3 4.2 108.1 15.9  2.2296493 -0.66983032
+# 2  161.2 4.1 114.8 16.4  1.6979452 -0.58265445
+# 3  171.5 3.1 123.2 19.0  1.1695976  0.07654175
+# 4  175.5 3.1 126.9 19.1  0.9379462  0.08639036
+# 5  180.8 1.1 132.1 18.8  0.6756511  1.37046303
+# 6  190.7 2.2 137.7 20.4  0.1996423  0.69131968
+# 7  202.1 2.1 146.0 22.7 -0.3771746  0.77997236
+# 8  212.4 5.6 154.1 26.5 -1.0192344 -1.42014882
+# 9  226.1 5.0 162.3 28.1 -1.6354243 -1.01109953
+# 10 231.9 5.1 164.3 27.6 -1.8532401 -1.06476864
+# 11 239.0 0.7 167.6 26.3 -2.0253583  1.74381457
+economy$Z1 <- pred[,1]
+economy$Z2 <- pred[,2]
+lm.sol <- lm(y ~ Z1 + Z2, data = economy)
+summary(lm.sol)
+
+# Z值转换为X
+beta <- coef(lm.sol) # 提取回归系数
+A <- loadings(pcmp) # 提取loading的系数
+x.bar <- pcmp$center
+x.sd <- pcmp$scale
+coef <- (beta[2]*A[,1]+ beta[3]*A[,2])/x.sd
+beta0 <- beta[1]- sum(x.bar * coef)
+c(beta0, coef)
 
 
 
