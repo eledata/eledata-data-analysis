@@ -9,3 +9,4 @@ test <- raw.test()
 pred <- grouped.forecast(train, test, 'stlf.svd', model.type='ets', n.comp=12)
 pred <- postprocess(train, pred, shift=2.5)
 snum <- write.submission(pred)
+http://www.chioka.in/kaggle-competition-solutions/

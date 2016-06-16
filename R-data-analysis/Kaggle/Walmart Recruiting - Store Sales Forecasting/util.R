@@ -1,9 +1,9 @@
 require(plyr)
 
 #TODO: set data, submit and r paths to correct directories, if needed
-paths = list(data='../data/',
-             submit='../submissions/',
-             r='../R/')
+paths = list(data='data/',
+             submit='submissions/',
+             r='R/')
 
 sample.submission <- function(){
   # Loads the sample submission, which is used in writing predictions
