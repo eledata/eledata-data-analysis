@@ -1,0 +1,17 @@
+{
+    "contents" : "# R的基本数据结构\n\n# Attribute\n\ny <- 1:10\nstruc <- structure(1:10, my_attr = \"This is vector\")\n",
+    "created" : 1466061504487.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1593582780",
+    "id" : "767B0039",
+    "lastKnownWriteTime" : 1466064429,
+    "path" : "~/GitHub/eledata-data-analysis/R-data-analysis/R Basic/Data_Structures.R",
+    "project_path" : "R Basic/Data_Structures.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
