@@ -126,3 +126,7 @@ fapf <- Factor_Analysis_PrinFactor(R, 2, d)
 E <- R - fapf$loadings %*% t(fapf$loadings)-diag(fapf$var[,2])
 sum(E^2)
 
+
+# 2.3 极大似然法
+
+
