@@ -82,8 +82,7 @@ def searchKDTree(tree, target, d):
 ################################################################################
 # ML Action KNN example
 ################################################################################
- 
-filePath = 'C:/Users/hmy/Documents/GitHub/sk-learn/dm-algo-impl/dataset/KNN/datingTestSet2.txt'
+filePath = path + '\\dataset\\KNN\\datingTestSet2.txt'
 def readDataFromFile(filePath):
     fr = open(filePath, 'rU')
     lines = fr.readlines()
@@ -157,9 +156,6 @@ def testKNN():
 ################################################################################
 # Hand Write Example
 ################################################################################
-filePath_Train = 'C:/Users/hmy/Documents/GitHub/sk-learn/dm-algo-impl/dataset/KNN/digits/trainingDigits/'
-filePath_Test = 'C:/Users/hmy/Documents/GitHub/sk-learn/dm-algo-impl/dataset/KNN/digits/testDigits/'
-
 def dataReadFromDigitFiles(path):
     fr = open(path, 'r')
     readLines = fr.readlines()
@@ -178,6 +174,10 @@ def dataReadFromDigitFiles(path):
 # print dataReadFromDigitFiles(filePath_Train_name)
 
 def handWriteKNN():
+    path = os.getcwd()
+    filePath_Train = path + '\\dataset\\KNN\\digits\\testDigits\\'
+    filePath_Test = path + '\\dataset\\KNN\\digits\\trainingDigits\\'
+    
     trainFileNameLst = os.listdir(filePath_Train)
     testFileNameLst = os.listdir(filePath_Test)
     trainDataSet = []
@@ -208,15 +208,10 @@ def handWriteKNN():
              
     acc = float(count)/dim
  
-    print acc
+    print 'Hand write acc: %f'%acc
     
     
 handWriteKNN()
-    
-    
-    
-    
-    
     
     
     

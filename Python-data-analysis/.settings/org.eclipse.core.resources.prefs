@@ -1,4 +1,10 @@
 eclipse.preferences.version=1
+encoding//JData-master/create_item_table.py=utf-8
+encoding//JData-master/create_user_table.py=utf-8
+encoding//JData-master/data_analysis.py=utf-8
+encoding//JData-master/data_cleaning.py=utf-8
+encoding//JData-master/potential_user.py=utf-8
+encoding//JData-master/sample_dataset.py=utf-8
 encoding//dm-algo-impl/KNN.py=utf-8
 encoding//dm-algo-impl/association_analysis.py=utf-8
 encoding//flask_recommend_sys/first_try_flask.py=utf-8
