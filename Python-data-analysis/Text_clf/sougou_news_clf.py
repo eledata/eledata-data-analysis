@@ -18,6 +18,7 @@ datapath = path + '\\SogouCS\\'
 
 link = []
 webdetails = []
+result = []
 filelist = os.listdir(datapath)
 
 
@@ -56,7 +57,7 @@ for link_item in link:
     while i <= len(line) - 6:
         webdetails.append(line[i:i+5])
         i = i + 6
-
+        
     for wd in webdetails:
         soup = BeautifulSoup('\n'.join(wd))
         print soup.prettify()
@@ -64,31 +65,22 @@ for link_item in link:
         docno = ''.join(soup.docno.string)
         title = ''.join(soup.contenttitle.string)
         content = ''.join(soup.content.string)
-        
-#        print url
-#        print docno
-#        print title
-#        print content
 
         tags = jieba.analyse.extract_tags(content)
         if len(tags) <= 20:
             tmptags = ['' for n in range(20)]
             for i in xrange(len(tags)):
-                tmptags[i] = tags[i]
+                tmptags[i] = ''.join(tags[i])
             tags = tmptags
-#        print '|'.join(tags)
-#        print len(tags[19])
+        
         convertresult = []
         convertresult.append(url)
         convertresult.append(docno)
         convertresult.append(title)
         for i in xrange(len(tags)):
             convertresult.append(tags[i])
-        tmpdf = pd.DataFrame(convertresult)
-        df.append(tmpdf.T)
-        print tmpdf.T
-    print df
+        result.append(convertresult)
     tmp.close()
+df.append(result)
 
-df.to_csv(datapath + 'result.csv')
 
