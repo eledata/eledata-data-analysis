@@ -27,7 +27,26 @@ for fl in filelist:
 df = pd.DataFrame(columns=['url', 
                            'docno', 
                            'title', 
-                           'content_key',
+                           'content_key_01',
+                           'content_key_02',
+                           'content_key_03',
+                           'content_key_04',
+                           'content_key_05',
+                           'content_key_06',
+                           'content_key_07',
+                           'content_key_08',
+                           'content_key_09',
+                           'content_key_10',
+                           'content_key_11',
+                           'content_key_12',
+                           'content_key_13',
+                           'content_key_14',
+                           'content_key_15',
+                           'content_key_16',
+                           'content_key_17',
+                           'content_key_18',
+                           'content_key_19',
+                           'content_key_20'
                            ])
 for link_item in link:
     tmp = open(link_item)
@@ -46,10 +65,10 @@ for link_item in link:
         title = ''.join(soup.contenttitle.string)
         content = ''.join(soup.content.string)
         
-        print url
-        print docno
-        print title
-        print content
+#        print url
+#        print docno
+#        print title
+#        print content
 
         tags = jieba.analyse.extract_tags(content)
         if len(tags) <= 20:
@@ -57,11 +76,18 @@ for link_item in link:
             for i in xrange(len(tags)):
                 tmptags[i] = tags[i]
             tags = tmptags
-        print '|'.join(tags)
-        print len(tags[19])
-        tmpdf = pd.DataFrame(url
-                             )
-        df.append(tmpdf)
+#        print '|'.join(tags)
+#        print len(tags[19])
+        convertresult = []
+        convertresult.append(url)
+        convertresult.append(docno)
+        convertresult.append(title)
+        for i in xrange(len(tags)):
+            convertresult.append(tags[i])
+        tmpdf = pd.DataFrame(convertresult)
+        df.append(tmpdf.T)
+        print tmpdf.T
+    print df
     tmp.close()
 
 df.to_csv(datapath + 'result.csv')
