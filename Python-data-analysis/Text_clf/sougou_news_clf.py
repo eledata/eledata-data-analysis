@@ -12,6 +12,7 @@ import pandas as pd
 import jieba
 import jieba.analyse
 import chardet
+import codecs
 
 path = os.getcwd()
 datapath = path + '\\SogouCS\\'
@@ -49,6 +50,25 @@ df = pd.DataFrame(columns=['url',
                            'content_key_19',
                            'content_key_20'
                            ])
+
+categories = ['auto',  
+ 'business',  
+ 'it',  
+ 'health',  
+ 'sports',
+ 'travel',
+ 'learning',
+ 'career',
+ 'cul',
+ 'mil',
+ 'news',
+ 'house',
+ 'yule',
+ 'women',
+ 'media',
+ 'gongyi'
+ ];  
+              
 for link_item in link:
     tmp = open(link_item)
     line = tmp.readlines()
@@ -60,12 +80,15 @@ for link_item in link:
         
     for wd in webdetails:
         soup = BeautifulSoup('\n'.join(wd))
-        print soup.prettify()
+        #print soup.prettify()
         url = ''.join(soup.url.string)
         docno = ''.join(soup.docno.string)
         title = ''.join(soup.contenttitle.string)
         content = ''.join(soup.content.string)
-
+        
+        contentype = url.replace('http://','').split('/')[0].split('.')[0]
+        
+        
         tags = jieba.analyse.extract_tags(content)
         if len(tags) <= 20:
             tmptags = ['' for n in range(20)]
@@ -75,6 +98,7 @@ for link_item in link:
         
         convertresult = []
         convertresult.append(url)
+        convertresult.append(contentype)
         convertresult.append(docno)
         convertresult.append(title)
         for i in xrange(len(tags)):
@@ -82,5 +106,16 @@ for link_item in link:
         result.append(convertresult)
     tmp.close()
 df.append(result)
+len(result)
+  
+f = codecs.open(datapath+'result.txt','w','utf-8')
+for res in result:
+    f.write(res[1]+'\n')
+f.close()
+
+
+
+
+
 
 
