@@ -16,40 +16,7 @@ import codecs
 
 path = os.getcwd()
 datapath = path + '\\SogouCS\\'
-
-link = []
-webdetails = []
-result = []
-filelist = os.listdir(datapath)
-
-
-for fl in filelist:
-    link.append(datapath + fl) 
-
-df = pd.DataFrame(columns=['url', 
-                           'docno', 
-                           'title', 
-                           'content_key_01',
-                           'content_key_02',
-                           'content_key_03',
-                           'content_key_04',
-                           'content_key_05',
-                           'content_key_06',
-                           'content_key_07',
-                           'content_key_08',
-                           'content_key_09',
-                           'content_key_10',
-                           'content_key_11',
-                           'content_key_12',
-                           'content_key_13',
-                           'content_key_14',
-                           'content_key_15',
-                           'content_key_16',
-                           'content_key_17',
-                           'content_key_18',
-                           'content_key_19',
-                           'content_key_20'
-                           ])
+stopwordpath = path + '\\Res\\stop_word.txt'
 
 categories = ['auto',  
  'business',  
@@ -67,51 +34,90 @@ categories = ['auto',
  'women',
  'media',
  'gongyi'
- ];  
-              
-for link_item in link:
-    tmp = open(link_item)
-    line = tmp.readlines()
-    i = 0
+ ];
+stopword = []
+stopwordfile = open(stopwordpath,'r')
+stline = stopwordfile.readlines()
+for tw in stline:
+    tw = tw.replace('\n','')
+    stopword.append(tw)
 
-    while i <= len(line) - 6:
-        webdetails.append(line[i:i+5])
-        i = i + 6
+###############################################################################
+# 网页分类目标：训练分类模型，对网页信息进行分类。
+
+def fileprocess(path):
+    filelist = os.listdir(path)
+    filepaths = []
+    newfiledata = []
+    for fl in filelist:
+        filepaths.append(path + fl)
+    
+    for filepath in filepaths:
+        filedata = open(filepath)
+        line = filedata.readlines()
+        i = 0
+        htmlraw = []
         
-    for wd in webdetails:
-        soup = BeautifulSoup('\n'.join(wd))
-        #print soup.prettify()
-        url = ''.join(soup.url.string)
-        docno = ''.join(soup.docno.string)
-        title = ''.join(soup.contenttitle.string)
-        content = ''.join(soup.content.string)
-        
-        contentype = url.replace('http://','').split('/')[0].split('.')[0]
-        
-        
-        tags = jieba.analyse.extract_tags(content)
-        if len(tags) <= 20:
-            tmptags = ['' for n in range(20)]
-            for i in xrange(len(tags)):
-                tmptags[i] = ''.join(tags[i])
-            tags = tmptags
-        
-        convertresult = []
-        convertresult.append(url)
-        convertresult.append(contentype)
-        convertresult.append(docno)
-        convertresult.append(title)
-        for i in xrange(len(tags)):
-            convertresult.append(tags[i])
-        result.append(convertresult)
-    tmp.close()
-df.append(result)
-len(result)
-  
-f = codecs.open(datapath+'result.txt','w','utf-8')
-for res in result:
-    f.write(res[1]+'\n')
-f.close()
+        # 取出每页数据
+        while i <= len(line) - 6:
+            htmlraw.append(line[i:i+5])
+            i = i + 6
+        # 对网页数据加工转换
+        # 1. 网页内容类别
+        # 2. 网页内容的分词信息
+        # 3. 网页网址信息
+        for hr in htmlraw:
+            wordlist = []
+            fileprocessdata = []
+            soup = BeautifulSoup('\n'.join(hr)) # 对网页信息重新整形，便于信息的抽取
+            # 抽取网页信息
+            url = ''.join(soup.url.string)
+            docno = ''.join(soup.docno.string)
+            title = ''.join(soup.contenttitle.string)
+            content = ''.join(soup.content.string)
+            
+            # 添加类别
+            contentype = url.replace('http://','').split('/')[0].split('.')[0]
+            # 网页内容分词进行预清理，清掉一些干扰性的词语
+            for seg in jieba.cut(content):
+                seg = seg.encode('utf8')
+                if seg not in stopword:
+                    if seg != ' ':
+                        wordlist.append(seg)
+            fileprocessdata.append(url)
+            fileprocessdata.append(contentype)
+            fileprocessdata.append(docno)
+            fileprocessdata.append(title)
+            fileprocessdata.append(wordlist)
+            newfiledata.append(fileprocessdata)
+        filedata.close()
+    return newfiledata
+
+
+consolidatedata = fileprocess(datapath)
+
+# tf-idf 筛选
+def tfidfprocess(rawfiledata):
+    # 创建分类的映射表，利用字典结构来实现
+    dict = {}
+    for cate in categories:
+        dict[cate] = []
+    
+    for rfd in rawfiledata:
+        if rfd[1] in categories:
+            dict[rfd[1]].append(rfd[4])
+    return dict
+
+
+res = tfidfprocess(consolidatedata)
+
+
+
+
+
+
+
+
 
 
 
