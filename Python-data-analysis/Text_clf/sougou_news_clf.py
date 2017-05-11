@@ -6,11 +6,11 @@ Created on Mon May 08 15:59:02 2017
 """
 
 import os
+from itertools import chain
 from sklearn import naive_bayes
 from bs4 import BeautifulSoup
 import pandas as pd
 import jieba
-import jieba.analyse
 import chardet
 import codecs
 
@@ -106,14 +106,15 @@ def tfidfprocess(rawfiledata):
     for rfd in rawfiledata:
         if rfd[1] in categories:
             dict[rfd[1]].append(rfd[4])
+    
+    # 合并链表
+    for cate in categories:
+        dict[cate] = list(chain(*res[cate]))
     return dict
 
 
+
 res = tfidfprocess(consolidatedata)
-
-
-
-
 
 
 
