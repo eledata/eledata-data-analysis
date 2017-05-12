@@ -5,6 +5,15 @@ Created on Mon May 08 15:59:02 2017
 @author: HUANGMA
 """
 
+###############################################################################
+# 1.数据预处理和特征提取（文档重现）。
+# 2.特征选择。
+# 3.分类。
+# 4.评估比较不同的分类器。
+# 5.根据给定标准选择最好的分类器（标准如分类准确性、F 值、 精确率或召回率）
+###############################################################################
+
+
 import os
 from itertools import chain
 from sklearn import naive_bayes
@@ -109,12 +118,12 @@ def tfidfprocess(rawfiledata):
     
     # 合并链表
     for cate in categories:
-        dict[cate] = list(chain(*res[cate]))
+        dict[cate] = list(chain(*dict[cate]))
     return dict
 
 
 
-res = tfidfprocess(consolidatedata)
+result = tfidfprocess(consolidatedata)
 
 
 
