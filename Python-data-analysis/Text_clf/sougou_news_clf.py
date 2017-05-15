@@ -17,6 +17,9 @@ Created on Mon May 08 15:59:02 2017
 import os
 from itertools import chain
 from sklearn import naive_bayes
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.naive_bayes import BernoulliNB
 from bs4 import BeautifulSoup
 import pandas as pd
 import jieba
@@ -93,11 +96,13 @@ def fileprocess(path):
                 if seg not in stopword:
                     if seg != ' ':
                         wordlist.append(seg)
+            # 将分词连接成字符串
+            wordstr = (' ').join(wordlist)
             fileprocessdata.append(url)
             fileprocessdata.append(contentype)
             fileprocessdata.append(docno)
             fileprocessdata.append(title)
-            fileprocessdata.append(wordlist)
+            fileprocessdata.append(wordstr)
             newfiledata.append(fileprocessdata)
         filedata.close()
     return newfiledata
@@ -117,8 +122,8 @@ def tfidfprocess(rawfiledata):
             dict[rfd[1]].append(rfd[4])
     
     # 合并链表
-    for cate in categories:
-        dict[cate] = list(chain(*dict[cate]))
+#    for cate in categories:
+#        dict[cate] = list(chain(*dict[cate]))
     return dict
 
 
@@ -126,11 +131,13 @@ def tfidfprocess(rawfiledata):
 result = tfidfprocess(consolidatedata)
 
 
+vectorizer = CountVectorizer(min_df = 1)
+transformer = TfidfTransformer(smooth_idf = False)
+X = vectorizer.fit_transform(result['women'])
+tfidf = transformer.fit_transform(X)
 
 
-
-
-
+#BernoulliNB.fit(tfidf,'women')
 
 
 
