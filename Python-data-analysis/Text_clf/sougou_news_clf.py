@@ -82,11 +82,13 @@ def fileprocess(path):
             wordlist = []
             fileprocessdata = []
             soup = BeautifulSoup('\n'.join(hr)) # 对网页信息重新整形，便于信息的抽取
-            # 抽取网页信息
-            url = ''.join(soup.url.string)
-            docno = ''.join(soup.docno.string)
-            title = ''.join(soup.contenttitle.string)
-            content = ''.join(soup.content.string)
+            
+            if soup.contenttitle.string <> None and soup.content.string <> None:
+                # 抽取网页信息
+                url = ''.join(soup.url.string)
+                docno = ''.join(soup.docno.string)
+                title = ''.join(soup.contenttitle.string)
+                content = ''.join(soup.content.string)
             
             # 添加类别
             contentype = url.replace('http://','').split('/')[0].split('.')[0]
@@ -98,6 +100,7 @@ def fileprocess(path):
                         wordlist.append(seg)
             # 将分词连接成字符串
             wordstr = (' ').join(wordlist)
+            
             fileprocessdata.append(url)
             fileprocessdata.append(contentype)
             fileprocessdata.append(docno)
@@ -133,11 +136,20 @@ result = tfidfprocess(consolidatedata)
 
 vectorizer = CountVectorizer(min_df = 1)
 transformer = TfidfTransformer(smooth_idf = False)
-X = vectorizer.fit_transform(result['women'])
-tfidf = transformer.fit_transform(X)
+X = vectorizer.fit_transform(result['women']) # 算出分词在每一篇文章里面的频数
+tfidf = transformer.fit_transform(X) # 计算tfidf的值
 
+ 
+feature_names = vectorizer.get_feature_names()
+freWordVector_df = pd.DataFrame(X.toarray()) # 全词库 词频 向量矩阵  
+tfidf_df = pd.DataFrame(tfidf.toarray())              # tfidf值矩阵  
+# print freWordVector_df  
+tfidf_df.shape
 
-#BernoulliNB.fit(tfidf,'women')
+for i in range(len(tfidf_df)):#打印每类文本的tf-idf词语权重，第一个for遍历所有文本，第二个for便利某一类文本下的词语权重
+    print u"-------这里输出第",i,u"类文本的词语tf-idf权重------"
+    for j in range(len(feature_names)):
+        print feature_names[j],tfidf_df[j][i]
 
 
 
